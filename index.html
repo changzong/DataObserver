@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="bootstrap-3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css">
+    <script type="text/javascript" src="jquery-2.1.4.min.js"></script>
+    <script type="text/javascript" src="bootstrap-3.3.5/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+    <script type="text/javascript" src="bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
+    <script type="text/javascript" src="angular.js"></script>
+</head>
+
+<body ng-app="tableManager" style="bgcolor='#D8D8D8'">
+	<div class="btn-group" style="position: absolute; margin: 5px; right:100px">
+		<button type="button" class="btn btn-primary" id="add_table">添加表</button>
+	</div>
+    <div id="showAdder" style="width:100%; height: 300px; display:none;" ng-controller="ctrl0">
+        <div class="container">
+            <br/>
+            <div class="row">
+                <div class="col-lg-4 col-md-4">
+                    <div class="input-group">
+                        <span class="input-group-addon" id="name">表名</span>
+                        <input type="text" class="form-control" placeholder="tablename" aria-describedby="basic-addon1" id="table_name">
+                        <div class="input-group-btn">
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="caret"></span></button>
+                            <ul class="dropdown-menu dropdown-menu-right">
+                              <li><a href="#">待添加</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-4">
+                    <div class="input-group">
+                        <span class="input-group-addon" id="type">表类型</span>
+                        <input type="text" class="form-control" placeholder="tabletype" aria-describedby="basic-addon1" id="table_type">
+                        <div class="input-group-btn">
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="caret"></span></button>
+                            <ul class="dropdown-menu dropdown-menu-right">
+                              <li><a href="#" ng-repeat="i in table_type" ng-click="tableTypeHandler(i)">{{i}}</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-4">
+                    <div class="input-group">
+                        <span class="input-group-addon" id="level">数据level</span>
+                        <input type="text" class="form-control" placeholder="datalevel" aria-describedby="basic-addon1" id="data_level">
+                        <div class="input-group-btn">
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="caret"></span></button>
+                            <ul class="dropdown-menu dropdown-menu-right">
+                              <li><a href="#" ng-repeat="i in data_level" ng-click="dataLevelHandler(i)">{{i}}</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br/>
+            <div class="row">
+                <div class="col-lg-4 col-md-4">
+                    <div class="input-group">
+                        <span class="input-group-addon" id="procName">ProcName</span>
+                        <input type="text" class="form-control" placeholder="procname" aria-describedby="basic-addon1" id="proc_name">
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-4">
+                    <div class="input-group">
+                        <span class="input-group-addon" id="note">Note</span>
+                        <input type="text" class="form-control" placeholder="note" aria-describedby="basic-addon1" id="note_text">
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-4">
+                    <div class="input-group">
+                        <span class="input-group-addon" id="inputMan">建表人</span>
+                        <input type="text" class="form-control" placeholder="inputman" aria-describedby="basic-addon1" id="input_man">
+                        <div class="input-group-btn">
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="caret"></span></button>
+                            <ul class="dropdown-menu dropdown-menu-right">
+                              <li><a href="#" ng-repeat="i in input_man" ng-click="inputManHandler(i)">{{i}}</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br/>
+            <div class="row">
+                <div class="col-lg-4 col-md-4">
+                    <div class="input-group">
+                        <span class="input-group-addon" id="inputDate">建表日期</span>
+                        <!--
+                        <input type="text" class="form-control" placeholder="inputdate" aria-describedby="basic-addon1">
+                        -->
+                        <input type="text" class="form-control" value="" placeholder="inputdate" id="datetimepicker1">
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-4">
+                    <div class="input-group">
+                        <span class="input-group-addon" id="updateMan">更新人</span>
+                        <input type="text" class="form-control" placeholder="updateman" aria-describedby="basic-addon1" id="update_man">
+                        <div class="input-group-btn">
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="caret"></span></button>
+                            <ul class="dropdown-menu dropdown-menu-right">
+                              <li><a href="#" ng-repeat="i in update_man" ng-click="updateManHandler(i)">{{i}}</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-4">
+                    <div class="input-group">
+                        <span class="input-group-addon" id="updateDate">更新日期</span>
+                        <!--
+                        <input type="text" class="form-control" placeholder="updatedate" aria-describedby="basic-addon1">
+                        -->
+                        <input type="text" class="form-control" value="" placeholder="updatedate" id="datetimepicker2">
+                    </div>
+                </div>
+            </div>
+            <br/>
+            <div class="row">
+                <div class="col-lg-4 col-md-4">
+                    <div class="input-group">
+                        <span class="input-group-addon" id="bussinessType">业务类别</span>
+                        <input type="text" class="form-control" placeholder="bussinesstype" aria-describedby="basic-addon1" id="business_type">
+                        <div class="input-group-btn">
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="caret"></span></button>
+                            <ul class="dropdown-menu dropdown-menu-right">
+                              <li><a href="#" ng-repeat="i in business_type" ng-click="businessTypeHandler(i)">{{i}}</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br/>
+            <div class="row">
+                <button type="button" class="btn btn-primary" ng-click="addIt()" id="add_it" style="position:absolute; left:50%">确定</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="table_list">
+
+    </div>
+
+    <script type="text/javascript">
+        $('#datetimepicker1, #datetimepicker2').datetimepicker({
+            format: "yyyy-mm-dd hh:ii",
+            autoclose: true,
+            todayBtn: true,
+            pickerPosition: "bottom-left"
+        });
+    </script>
+    <script type="text/javascript" src="data.js"></script>
+    <script>
+
+    $('#add_table').click(function(){
+    	//window.open("addtable.html", "newwindow", "height=450, width=1000, top=100, left=100, toolbar=no, menubar=no, scrollbars=no, resizable=no,location=no, status=no"); // 浏览器不支持隐藏地址栏等功能
+        $("#showAdder").fadeIn();
+        $("#add_table").fadeOut();
+        var data_added = {};
+    });
+    </script>
+
+    <div ng-controller="ctrl1">
+    <div class="panel panel-default">
+        <div class="panel-heading">TableManager</div>
+        <div class="panel-body">
+        <p>表管理界面，用于表的添改删查等功能</p>
+        </div>
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                  <th ng-repeat="i in column">{{i}}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="j in data">
+                    <td ng-repeat="k in column">
+                        {{j[k].toString().slice(0,20)}}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    </div>
+    <script type="text/javascript" src="controller.js"></script>
+</body>
