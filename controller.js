@@ -1,6 +1,6 @@
 
 var data_added = {};
-var chart = angular.module('tableManager', []);
+var chart = angular.module('tableManager', ['smart-table']);
 
 chart.controller('ctrl0', function($scope, $http){ 
 	$scope.table_type = ["事实表", "查询表", "中间表", "维度表"];
@@ -43,12 +43,19 @@ chart.controller('ctrl0', function($scope, $http){
 		console.log(data_added);
 		table_data.push(data_added);
 	}
+	$scope.cancelIt = function() {
+		$("#showAdder").fadeOut();
+		$("#add_table").fadeIn();
+	}
 });
 
 
 chart.controller('ctrl1', function($scope, $http){
 	$scope.data = table_data;
 	$scope.column = [];
+	$scope.sortReverse  = false;
+	$scope.sortType = "";
+	$scope.itemsByPage=10;
 	for (var i in $scope.data[0]) {
 		$scope.column.push(i);
 	}
@@ -56,4 +63,10 @@ chart.controller('ctrl1', function($scope, $http){
 		$scope.data = table_data;
 		$scope.$apply();
 	});
+	$scope.toggleSort = function(col) {
+        if($scope.sortType === col){
+            $scope.sortReverse = !$scope.sortReverse;
+        }
+        $scope.sortType = col;
+    };
 })
