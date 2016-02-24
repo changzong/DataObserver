@@ -54,7 +54,6 @@ chart.controller('ctrl1', function($scope, $http){
 	$scope.data = table_data;
 	$scope.column = [];
 	$scope.sortReverse  = false;
-	$scope.sortType = "";
 	$scope.itemsByPage=10;
 	for (var i in $scope.data[0]) {
 		$scope.column.push(i);
@@ -64,9 +63,14 @@ chart.controller('ctrl1', function($scope, $http){
 		$scope.$apply();
 	});
 	$scope.toggleSort = function(col) {
-        if($scope.sortType === col){
-            $scope.sortReverse = !$scope.sortReverse;
+        $scope.sortReverse = !$scope.sortReverse;
+        $(".flag").remove();
+        if ($scope.sortReverse) {
+            console.log("reverse");
+            $("#table_head_"+col).prepend("<div class='flag' style='text-align:center'>&#9660;</div>");
         }
-        $scope.sortType = col;
+        else {
+            $("#table_head_"+col).prepend("<div class='flag' style='text-align:center'>&#9650;</div>");
+        }
     };
 })
