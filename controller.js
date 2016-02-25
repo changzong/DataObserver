@@ -53,7 +53,7 @@ chart.controller('ctrl0', function($scope, $http){
 chart.controller('ctrl1', function($scope, $http){
 	$scope.data = table_data;
 	$scope.column = [];
-	$scope.sortReverse  = false;
+	$scope.sortReverse  = 0;
 	$scope.itemsByPage=10;
 	for (var i in $scope.data[0]) {
 		$scope.column.push(i);
@@ -63,14 +63,25 @@ chart.controller('ctrl1', function($scope, $http){
 		$scope.$apply();
 	});
 	$scope.toggleSort = function(col) {
-        $scope.sortReverse = !$scope.sortReverse;
+        $scope.sortReverse += 1;
+        $scope.sortReverse = $scope.sortReverse % 3;
         $(".flag").remove();
-        if ($scope.sortReverse) {
+        if ($scope.sortReverse == 1) {
             console.log("reverse");
             $("#table_head_"+col).prepend("<div class='flag' style='text-align:center'>&#9660;</div>");
         }
-        else {
+        else if ($scope.sortReverse == 2) {
             $("#table_head_"+col).prepend("<div class='flag' style='text-align:center'>&#9650;</div>");
         }
+        else {
+        	$("#table_head_"+col).prepend("<div class='flag' style='text-align:center'>&ndash;</div>");
+        }
     };
+    $scope.popGraph = function(item, col) {
+    	if (col == "tableName") {
+    		var graphwindow = window.open("graph.html?param="+item,"表关系图",
+    			"top=100,left=100,width=700,height=500,menubar=no,scrollbars=no,toolbar=no,status=no");
+    		
+    	}
+    }
 })

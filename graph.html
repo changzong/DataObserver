@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8">
+    <script type="text/javascript" src="jquery-2.1.4.min.js"></script>
+    <script type="text/javascript" src="echarts.min.js"></script>
+    
+</head>
+<body>
+	<div id="main" style="width:650px; height:480px"></div>
+	<script type="text/javascript">
+		var root_item = window.location.search.replace("?param=", "");
+		//$("#main").css({width: $(window).width()-50, height: $(window).height()-20});
+		
+		var relation_data = [
+			{"name": "FactGoodsSearchDaySum", "parents": ["FactTrade", "FactTradeShipperDaySum"]},
+			{"name": "FactTrade", "parents": ["QLogApiExecTime", "FactTradeDriverDaySum","FactLogApiUrlDict"]},
+			{"name": "FactTradeShipperDaySum", "parents": ["QLogApiExecTimePercentile", "FactLogApiUrlDict", "QLoginCheat"]},
+			{"name": "FactLogApiUrlDict", "parents": ["ShipperPerformance", "EmployeePerformance"]}
+		];
+		var data = [];
+		var links = [];
+		var tmp = [];
+		var vol = {};
+		vol[root_item] = 0.1;
+		for (var i=0; i<relation_data.length; i++) {
+			for (var k in relation_data[i]){
+				if (k == "name") {
+					if (tmp.indexOf(relation_data[i][k]) == -1) {
+						tmp.push(relation_data[i][k]);
+						data.push({"name": relation_data[i][k]});
+					}
+				}
+				else {
+					for (var j=0; j<relation_data[i][k].length; j++) {
+						if (tmp.indexOf(relation_data[i][k][j]) == -1) {
+							tmp.push(relation_data[i][k][j]);
+							data.push({"name": relation_data[i][k][j]});
+							vol[relation_data[i][k][j]] = vol[relation_data[i]["name"]] / relation_data[i][k].length;
+						}
+						links.push({"source": relation_data[i]["name"], "target": relation_data[i][k][j], "value": vol[relation_data[i]["name"]]});
+					}
+				}
+			}
+		}	
+
+		var myChart = echarts.init(document.getElementById('main'));
+		var option = {
+	        title: {
+	            text: '表血缘图'
+	        },
+	        tooltip: {
+	            trigger: 'item',
+	            triggerOn: 'mousemove',
+	            formatter: function (params) {
+	            	return params.name.split("-")[0] + "数据来自于" + params.name.split("-")[1];
+	            }
+	        },
+	        series: [
+	            {
+	                type: 'sankey',
+	                layout:'none',
+	                data: data,
+	                links: links,
+	                itemStyle: {
+	                    normal: {
+	                        borderWidth: 1,
+	                        borderColor: '#aaa'
+	                    }
+	                },
+	                lineStyle: {
+	                    normal: {
+	                        curveness: 0.5
+	                    }
+	                }
+	            }
+	        ]
+	    };
+	    console.log(option);
+
+		myChart.setOption(option);
+	</script>
+</body>
