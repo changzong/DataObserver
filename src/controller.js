@@ -95,7 +95,7 @@ chart.controller('ctrl1', function($scope, $http, $filter){
 
 		    $scope.popGraph = function(item, col) {
 		    	if (col == "tableName") {
-		    		var graphwindow = window.open("graph.html?param="+item,"表关系图",
+		    		var graphwindow = window.open("/graph?param="+item,"表关系图",
 		    			"top=100,left=100,width=700,height=500,menubar=no,scrollbars=no,toolbar=no,status=no");
 		    		
 		    	}

@@ -21,6 +21,9 @@ conn.query('SELECT * from TableManager', function(err, rows, fields) {
 	app.get('/', function(req, res) { 
 		res.render('index');
 	});
+	app.get('/graph', function(req, res) { 
+		res.render('graph');
+	});
 	app.get('/data', function(req, res) { 
 		res.send(rows);
 	});
