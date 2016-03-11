@@ -2,10 +2,10 @@ var express = require('express');
 var mysql = require('mysql');
 
 var conn = mysql.createConnection({
-    host: '10.33.64.15',
-    user: 'bigdata',
-    password: '4WsiKvxhi9pITBfO4Mc8',
-    database:'report',
+    host: 'xxxx',
+    user: 'xxxx',
+    password: 'xxxx',
+    database:'xxxx',
     port: 3306
 });
 conn.connect();
