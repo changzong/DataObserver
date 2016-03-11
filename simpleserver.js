@@ -2,10 +2,10 @@ var express = require('express');
 var mysql = require('mysql');
 
 var conn = mysql.createConnection({
-    host: 'xxx',
-    user: 'xxx',
-    password: 'xxx',
-    database:'xxx',
+    host: '10.33.64.15',
+    user: 'bigdata',
+    password: '4WsiKvxhi9pITBfO4Mc8',
+    database:'report',
     port: 3306
 });
 conn.connect();
@@ -13,6 +13,10 @@ conn.query('SELECT * from TableManager', function(err, rows, fields) {
     if (err) throw err;
     //console.log('表管理列表: ', rows[0]);
 	var app = express();
+	var port = 8182;
+	//var server = require('http').createServer(app);
+	var io = require('socket.io').listen(app.listen(port));
+
 	app.use('/src', express.static('src'));
 	app.use('/lib', express.static('lib'));
 	app.engine('html', require('ejs').renderFile);
@@ -27,11 +31,15 @@ conn.query('SELECT * from TableManager', function(err, rows, fields) {
 	app.get('/data', function(req, res) { 
 		res.send(rows);
 	});
-	var server = app.listen(8182, function () {
-	  var host = server.address().address;
-	  var port = server.address().port;
-
-	  console.log('Example app listening at port %s', port);
+	app.get('/msg', function(req, res) { 
+		res.render('message');
+	});
+	console.log("监听端口： " + port);
+	io.sockets.on('connection', function (socket) {
+	    socket.emit('news', { message: '欢迎来聊天' });
+	    socket.on('send', function (data) {
+	        io.sockets.emit('news', data);
+	    });
 	});
 });
 conn.end();

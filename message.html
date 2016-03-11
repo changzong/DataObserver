@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8">
+    <script type="text/javascript" src="http://localhost:8182/socket.io/socket.io.js"></script>
+</head>
+
+<body>
+<input type="text" id="field" />
+<input type="button" id="send" value="发送" />
+<div id="content"></div>
+<script>
+	var content = document.getElementById("content");
+	var sendButton = document.getElementById("send");
+	var field = document.getElementById("field");
+	var socket = io.connect();
+	socket.on('news', function (data) {
+		console.log(data);
+		content.innerHTML = data.message;
+	});
+
+    sendButton.onclick = function() {
+        var text = field.value;
+        console.log(text);
+        socket.emit('send', { message: text });
+    };
+</script>
+</body>
